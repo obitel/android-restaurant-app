@@ -1,10 +1,13 @@
 package anew.resandroid.com.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,8 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         button.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                Log.d("check", "button has been clicked");
+                //Log.d("check", "button has been clicked");
+                goToLogin();
             }
         });
 
@@ -38,5 +43,10 @@ public class MainActivity extends AppCompatActivity {
     protected Button loadSMSButton(){
         Button button = findViewById(R.id.sms_button);
         return button;
+    }
+
+    private final void goToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
