@@ -2,62 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    android:padding="20dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="300px"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Use Location Data: "/>
-
-            <ToggleButton
-                android:id="@+id/locationSwitch"
-                android:layout_width="150px"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_marginLeft="50px"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <EditText
-            android:id="@+id/street"
-            android:layout_width="600px"
-            android:layout_height="wrap_content"
+            android:id="@+id/searchAddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:maxLines="1"
             android:maxLength="16"
             android:imeOptions="actionGo"
@@ -65,58 +27,30 @@
             android:hint="street Address"
             android:textSize="24sp"
             android:textAlignment="center"
-            android:layout_marginLeft="10sp"
             />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20sp"
-        android:orientation="horizontal">
-
-
-        <EditText
-            android:id="@+id/city"
-            android:layout_width="350px"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:maxLength="16"
-            android:imeOptions="actionGo"
-            android:inputType="numberDecimal"
-            android:hint="City"
+        <Button
+            android:id="@+id/search"
+            android:text="search"
             android:textSize="24sp"
-            android:textAlignment="center"
-            android:layout_marginLeft="10sp"
-            />
-
-
-        <EditText
-            android:id="@+id/zip"
-            android:layout_width="200px"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:maxLength="16"
-            android:imeOptions="actionGo"
-            android:inputType="numberDecimal"
-            android:hint="zip"
-            android:textSize="24sp"
-            android:textAlignment="center"
-            android:layout_marginLeft="50px"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             />
+
+        <ListView
+            android:id="@+id/results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="invisible">
+
+        </ListView>
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/search"
-        android:text="search"
-        android:textSize="24sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20sp"
-        />
-    </LinearLayout>
+
 
 </LinearLayout>
