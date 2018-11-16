@@ -1,5 +1,6 @@
 package anew.resandroid.com.myapplication;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,6 @@ import com.facebook.login.LoginResult;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
     private CallbackManager callbackManager;
 
@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -85,5 +91,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    protected void doMySearch(String query){
+        return;
     }
 }
