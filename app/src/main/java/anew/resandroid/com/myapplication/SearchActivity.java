@@ -72,16 +72,12 @@ public class SearchActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(this, this.PERMISSION_STRING) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{this.PERMISSION_STRING}, MY_PERMISSIONS_CODE);
         }
-        else{
-
-            String toastString = "Permission Granted!";
-            Toast toast = Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_LONG);
-            toast.show();
-        }
 
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                //GETS LOCATION. NOT REALLY NEEDED, BUT MIGHT BE USEFUL
+
                 Log.v("Place", "Checkpoint4");
                 if(lastLocation == null){
                     lastLocation = location;
@@ -92,15 +88,9 @@ public class SearchActivity extends AppCompatActivity {
 
                 locationManager.removeUpdates(locationListener);
 
-                String toastString = String.valueOf(lastLocation.getLongitude()) + ", " + String.valueOf(lastLocation.getLatitude());
-                Toast toast = Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_LONG);
-                toast.show();
-
                 searchCustomer = new SearchCustomer(location);
 
                 Log.v("Place", "Checkpoint6");
-
-                locationSearch(lastLocation);
 
             }
 
@@ -139,13 +129,14 @@ public class SearchActivity extends AppCompatActivity {
                 Log.v("Place", "Checkpoint1");
 
                 if (ContextCompat.checkSelfPermission(SearchActivity.this, PERMISSION_STRING) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    String provider = locationManager.getBestProvider(new Criteria(), true);
-                    Log.v("Place", "Checkpoint2");
-                    if (provider != null) {
-                        Log.v("Place", "Checkpoint3");
-                        locationManager.requestLocationUpdates(provider, 1000, 1, locationListener);
-                    }
+                    locationSearch();
+//                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    String provider = locationManager.getBestProvider(new Criteria(), true);
+//                    Log.v("Place", "Checkpoint2");
+//                    if (provider != null) {
+//                        Log.v("Place", "Checkpoint3");
+//                        locationManager.requestLocationUpdates(provider, 1000, 1, locationListener);
+//                    }
                 }
                 else{
                     //Read string from above.
@@ -158,7 +149,7 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
     }
 
-    private void locationSearch(Location location){
+    private void locationSearch(){
 
         if(ContextCompat.checkSelfPermission(this, this.PERMISSION_STRING) == PackageManager.PERMISSION_GRANTED) {
             Log.v("Place", "Checkpoint7");
@@ -215,25 +206,6 @@ public class SearchActivity extends AppCompatActivity {
             });
         }
 
-//        List<Address> addressList = null;
-//
-//        if (location != null) {
-//            Geocoder geocoder = new Geocoder(SearchActivity.this);
-//            try{
-//                addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//
-//                Address address = addressList.get(0);
-//
-//                String toastString = String.valueOf(address);
-//                Toast toast = Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_LONG);
-//                toast.show();
-//
-//
-//
-//            }catch (IOException e){
-//                e.printStackTrace();
-//            }
-//        }
 
     }
 

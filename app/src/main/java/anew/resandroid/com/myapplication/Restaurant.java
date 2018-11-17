@@ -1,6 +1,7 @@
 package anew.resandroid.com.myapplication;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.location.places.Place;
 
@@ -61,11 +62,17 @@ public class Restaurant implements ILocation {
         return restaurantName;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    public String getPhoneNumber() { return phoneNumber; }
 
     public String getPricePoint() {
         return pricePoint;
+    }
+
+    public void doGreenButton(){
+        Log.v("Button", this.getRestaurantName() + "GREEN");
+    }
+
+    public void doRedButton(){
+        Log.v("Button", this.getRestaurantName() + "RED");
     }
 }

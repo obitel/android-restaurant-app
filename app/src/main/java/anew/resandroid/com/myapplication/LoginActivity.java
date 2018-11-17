@@ -29,9 +29,6 @@ public class LoginActivity extends AppCompatActivity {
                 username = getTextFromInput(R.id.edit_email);
                 password = getTextFromInput(R.id.edit_pw);
 
-                String toastString = "Trying " + username +"/" + password;
-                Toast toast = Toast.makeText(getApplicationContext(), toastString, Toast.LENGTH_LONG);
-                toast.show();
                 negotiateCredentials(username, password);
             }
         };
@@ -42,9 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void negotiateCredentials(String un, String pw)
     {
-        if((un.equals("admin")) && (pw.equals("admin"))){
-            goToSearch();
-        }
+        goToSearch();
     }
 
     private void goToSearch()
