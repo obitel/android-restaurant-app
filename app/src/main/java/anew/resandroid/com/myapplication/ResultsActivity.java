@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,20 +22,26 @@ public class ResultsActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_results);
 
-        Log.v("Results: ", "checkPoint 1");
-
         ArrayList<Restaurant> restaurantArrayList;
 
         Intent intent = getIntent();
         restaurantArrayList = intent.getParcelableArrayListExtra("restaurants");
-        Log.v("Results: ", "checkPoint 2\n" + "Array size: " + restaurantArrayList.size());
+
+        if(restaurantArrayList.size() == 0)
+        {
+            String error = "Sorry, we couldn't find any reuslts.";
+            Toast toast = Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT);
+            toast.show();
+
+            Intent backToSearch = new Intent(ResultsActivity.this, SearchActivity.class);
+            startActivity(backToSearch);
+        }
 
         Restaurant[] restaurantsArray = new Restaurant[restaurantArrayList.size()];
         for(int i = 0; i < restaurantArrayList.size(); i++) {
             restaurantsArray[i] = restaurantArrayList.get(i);
         }
 
-        Log.v("Results: ", "checkPoint 3");
 
         mRecyclerView = findViewById(R.id.restaurant_recycler);
 
@@ -45,8 +52,14 @@ public class ResultsActivity extends AppCompatActivity{
             mAdapter = new RestaurantViewAdapter(restaurantsArray);
             mRecyclerView.setAdapter(mAdapter);
         }
+        else{
+            String error = "There was an error loading the results. Sorry.";
+            Toast toast = Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT);
+            toast.show();
 
-        Log.v("Results: ", "checkPoint 4");
+            Intent backToSearch = new Intent(ResultsActivity.this, SearchActivity.class);
+            startActivity(backToSearch);
+        }
 
     }
 }

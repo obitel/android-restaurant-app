@@ -53,7 +53,6 @@ public class SearchActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    private SearchCustomer searchCustomer = null;
 
     String street = null;
     String city = null;
@@ -80,20 +79,12 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 //GETS LOCATION. NOT REALLY NEEDED, BUT MIGHT BE USEFUL
-
-                Log.v("Place", "Checkpoint4");
                 if(lastLocation == null){
                     lastLocation = location;
                 }
                 lastLocation = location;
 
-                Log.v("Place", "Checkpoint5");
-
                 locationManager.removeUpdates(locationListener);
-
-                searchCustomer = new SearchCustomer(location);
-
-                Log.v("Place", "Checkpoint6");
 
             }
 
@@ -129,13 +120,12 @@ public class SearchActivity extends AppCompatActivity {
         search.setOnClickListener(searchClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Place", "Checkpoint1");
 
                 if (ContextCompat.checkSelfPermission(SearchActivity.this, PERMISSION_STRING) == PackageManager.PERMISSION_GRANTED) {
                     locationSearch();
 
 
-
+/*Code for getting devices Latitude and Longitude. Unnecessary with google Maps*/
 //                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //                    String provider = locationManager.getBestProvider(new Criteria(), true);
 //                    Log.v("Place", "Checkpoint2");
@@ -159,22 +149,19 @@ public class SearchActivity extends AppCompatActivity {
         final ArrayList<Restaurant> restaurantList = new ArrayList<>();
 
         if(ContextCompat.checkSelfPermission(this, this.PERMISSION_STRING) == PackageManager.PERMISSION_GRANTED) {
-            Log.v("Place", "Checkpoint7");
             PlaceDetectionClient placeDetectionClient = Places.getPlaceDetectionClient(SearchActivity.this);
-            Log.v("Place", "Checkpoint8");
+
             Task<PlaceLikelihoodBufferResponse> placeLikelihoods = placeDetectionClient.getCurrentPlace(null);
             placeLikelihoods.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
                 @Override
                 public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                    Log.v("Place", "Checkpoint9");
-                    Log.v("Tag", "Current Location Info");
                     List<Place> placeList = new ArrayList<Place>();
                     PlaceLikelihoodBufferResponse possiblePlaces = task.getResult();
-                    Log.v("Place", "Checkpoint10");
+
                     for(PlaceLikelihood placeLikelihood : possiblePlaces){
                         placeList.add(placeLikelihood.getPlace().freeze());
                     }
-                    Log.v("Place", "Checkpoint11");
+
                     possiblePlaces.release();
 
                     for(Place place : placeList){
@@ -184,26 +171,9 @@ public class SearchActivity extends AppCompatActivity {
                                 Restaurant restaurant = new Restaurant(place);
                                 restaurantList.add(restaurant);
 
-                                rName.setText(place.getName().toString());
-
-                                StringBuilder priceString = new StringBuilder();
-                                for(int i = 0; i < place.getPriceLevel(); i++){
-                                    priceString.append("$");
-                                }
-                                rPrice.setText(priceString.toString());
-
-                                //TODO: Find way to calculate distance
-
-                                rRating.setText(String.valueOf(place.getRating()));
-
                                 break;
                             }
                         }
-
-                    }
-
-                    for(Restaurant r : restaurantList){
-                        Log.v("Places", r.getRestaurantName() + " " + r.getPricePoint() + " " + r.getRating());
 
                     }
 
