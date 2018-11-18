@@ -38,10 +38,6 @@
             android:text="search"
             android:textSize="24sp" />
 
-        <include layout="@layout/fragment_restaurant">
-
-        </include>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

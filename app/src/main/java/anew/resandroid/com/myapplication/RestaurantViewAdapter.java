@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class RestaurantViewAdapter extends RecyclerView.Adapter<RestaurantViewAdapter.ViewHolder> {
 
+    //private ArrayList<Restaurant> restaurants;
     private Restaurant[] restaurants;
 
     public RestaurantViewAdapter(Restaurant[] r){
