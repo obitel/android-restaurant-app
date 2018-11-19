@@ -27,13 +27,4 @@
         android:layout_height="wrap_content"
         android:text="Log in" />
 
-    <Button
-        android:id="@+id/sms_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SMS messages"
-        app:layout_constraintLeft_toRightOf="@+id/login_button"
-        />
-
-
 </android.support.constraint.ConstraintLayout>
