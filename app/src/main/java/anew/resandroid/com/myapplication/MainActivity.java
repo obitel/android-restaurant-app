@@ -1,6 +1,5 @@
 package anew.resandroid.com.myapplication;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -28,27 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = this.loadLogInButton();
 
-        Button smsButton = this.loadSMSButton();
+//        Button smsButton = this.loadSMSButton();
 
         button.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                Log.d("check", "button has been clicked");
+                //Log.d("check", "button has been clicked");
+                goToLogin();
             }
 
         });
 
-        smsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d("check", "sms button has been clicked");
-            }
-        });
-
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
-        }
+//        smsButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Log.d("check", "sms button has been clicked");
+//            }
+//        });
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -72,27 +66,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected Button loadLogInButton(){
+    protected Button loadLogInButton() {
         Button button = findViewById(R.id.login_button);
         return button;
     }
 
-    protected Button loadSMSButton(){
-        Button button = findViewById(R.id.sms_button);
-        return button;
-    }
     @Override
     public void onStart() {
         super.onStart();
 
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+
+        Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
     }
-    protected void doMySearch(String query){
-        return;
+
+
+        private final void goToLogin () {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
-}
+
