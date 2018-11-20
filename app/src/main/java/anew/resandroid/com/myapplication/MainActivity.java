@@ -2,17 +2,24 @@ package anew.resandroid.com.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -22,11 +29,9 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import org.json.JSONArray;
+import com.facebook.login.widget.ProfilePictureView;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -36,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private LoginButton loginButton;
     private String name;
+    private String picId;
+    private String fbId;
+    private String on_resume;
+    private ProfilePictureView profilePictureView;
+    Profile profile;
+
+    public static final String PREFS_NAME = "MY_PREFS";
+
 
 
     @Override
@@ -43,9 +56,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Context context = this;
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        TextView mTextView = findViewById(R.id.welcome);
+
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startFromScreen();
+            }
+            
+        });
+
+        if (savedInstanceState == null) {
+            mTextView.setText(R.string.welcome);
+        } else {
+            on_resume = savedInstanceState.getString("name");
+            mTextView.setText("Welcome back." + on_resume);
+        }
+
+        loginButton = findViewById(R.id.login_button);
 
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
@@ -67,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        AccessToken accessToken = loginResult.getAccessToken();
-                        Profile profile = Profile.getCurrentProfile();
+                       AccessToken accessToken = loginResult.getAccessToken();
+                       profile = Profile.getCurrentProfile();
 
                         GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
@@ -83,8 +112,21 @@ public class MainActivity extends AppCompatActivity {
 
                                             JSONObject responseGraphObject = response.getJSONObject();
                                             name = (String) responseGraphObject.get("name");
+                                            fbId = (String) responseGraphObject.get("id");
 
-                                            Log.d("ERRORS", name);
+                                            TextView textView = findViewById(R.id.welcome);
+                                            textView.setText( R.string.welcome + ", " + name);
+
+                                            ProfilePictureView profilePictureView;
+
+                                            profilePictureView = findViewById(R.id.friendProfilePicture);
+
+                                            profilePictureView.setProfileId(fbId);
+
+                                            SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                              SharedPreferences.Editor editor=preferences.edit();
+                                              editor.putString("Name",fbId);
+                                              editor.commit();Log.d("ERRORS", name);
 
                                         } catch (Exception e){
                                             Log.d("ERRORS", e.getMessage());
@@ -93,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
 
-                        TextView textView = findViewById(R.id.welcome);
-                        textView.setText( name);
                         Bundle parameters = new Bundle();
                         parameters.putString("fields", "id,name,email,gender,birthday");
                         request.setParameters(parameters);
@@ -130,27 +170,32 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
+        startActivity(intent);
     }
 
-        private final void goToLogin () {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
+    private final void goToLogin () {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 
-    protected  Bitmap getFacebookProfilePicture(String userID){
-
-        Bitmap bitmap = null;
-        try {
-            URL imageURL = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
-            bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-        } catch (Exception e){
-            Log.v("ERRORS", e.getMessage());
-        }
+    public static Bitmap getFacebookProfilePicture(String userID) throws IOException {
+        String fbImg = "https://graph.facebook.com/"+ userID +"/picture?type=large";
+        URL imageURL = new URL(fbImg);
+        Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
 
         return bitmap;
     }
 
-//        Bitmap bitmap = getFacebookProfilePicture(userID);
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("name", on_resume);
     }
+
+    private final void startFromScreen () {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);                                            
+    }
+
+}
 
