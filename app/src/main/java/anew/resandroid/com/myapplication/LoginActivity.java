@@ -12,14 +12,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 public class LoginActivity extends AppCompatActivity {
     private String username;
     private String password;
+    final int RC_SIGN_IN = 3;
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, signInOptions);
+
+
 
         final Button login = findViewById(R.id.login_button);
 
@@ -35,6 +51,21 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(onClickLogin);
 
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        View.OnClickListener signInListener;
+        signInButton.setOnClickListener(signInListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                googleSignIn();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
     private void negotiateCredentials(String un, String pw)
@@ -57,5 +88,32 @@ public class LoginActivity extends AppCompatActivity {
         return inputString;
     }
 
-    Intent intent = getIntent();
+    private void googleSignIn(){
+        Intent intent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(intent, RC_SIGN_IN);
+    }
+
+    @Override
+            public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_SIGN_IN){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignIn(task);
+        }
+    }
+
+    private void handleSignIn(Task task) {
+        try {
+            GoogleSignInAccount account = (GoogleSignInAccount) task.getResult(ApiException.class);
+        } catch (ApiException e) {
+            e.printStackTrace();
+
+
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+
+        Intent intent = getIntent();
 }

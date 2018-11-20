@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.util.Log;
+import com.facebook.login.LoginResult;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -25,24 +28,19 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = this;
 
-        Button button = this.loadLogInButton();
-
-//        Button smsButton = this.loadSMSButton();
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Log.d("check", "button has been clicked");
-                goToLogin();
-            }
-
-        });
-
-//        smsButton.setOnClickListener(new View.OnClickListener() {
+//        Button button = this.loadLogInButton();
+//
+//
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
 //            public void onClick(View v) {
-//                Log.d("check", "sms button has been clicked");
+//                //Log.d("check", "button has been clicked");
+//                //goToLogin();
 //            }
+//
 //        });
+
+
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -50,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
+                        AccessToken accessToken = loginResult.getAccessToken();
+                        Profile profile = Profile.getCurrentProfile();
                     }
 
                     @Override
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
-        Intent intent = new Intent(this, SearchActivity.class);
+        Intent intent = new Intent(this, SearchableActivity.class);
             startActivity(intent);
     }
 

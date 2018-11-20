@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,6 +23,16 @@ public class ResultsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_results);
+
+        ImageButton back = findViewById(R.id.back_to_search);
+        View.OnClickListener backButtonListener;
+        back.setOnClickListener(backButtonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backToSearch = new Intent(ResultsActivity.this, SearchActivity.class);
+                startActivity(backToSearch);
+            }
+        });
 
         ArrayList<Restaurant> restaurantArrayList;
 
