@@ -79,15 +79,15 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
 
-//       Button button = this.loadLogInButton();
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                goToLogin();
-//            }
-//
-//        });
+       Button button = this.loadLogInButton();
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToLogin();
+            }
+
+        });
 
 
         callbackManager = CallbackManager.Factory.create();

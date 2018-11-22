@@ -80,9 +80,9 @@ public class RestaurantViewAdapter extends RecyclerView.Adapter<RestaurantViewAd
 
                 Log.d("ERRORS", "called AFTER RECO");
 
-                //recommendation.savePreferences();
+                recommendation.savePreferences();
 
-//                Log.d("ERRORS", recommendation.toString());
+                Log.d("ERRORS", recommendation.toString());
 
             }
         });
